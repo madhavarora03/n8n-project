@@ -7,4 +7,4 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 @router.get("/me")
 def read_me(user=Depends(get_current_user)):
-    return {"message": f"Hello, {user['email']}!"}
+    return {"message": f"Hello, {user}!"}

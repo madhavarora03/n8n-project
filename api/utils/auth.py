@@ -15,8 +15,15 @@ clerk = Clerk(bearer_auth=CLERK_SECRET_KEY)
 async def get_current_user(request: Request):
     request_state = clerk.authenticate_request(
         request,
-        AuthenticateRequestOptions(authorized_parties=["http://localhost:3000"]),
+        AuthenticateRequestOptions(
+            authorized_parties=[
+                "http://localhost:3000",
+                "https://n8n-project-nu.vercel.app/",
+            ]
+        ),
     )
+
     if not request_state.is_signed_in:
         raise HTTPException(status_code=401, detail="Unauthorized")
-    return request_state.payload
+
+    return request_state.payload["sub"]  # type: ignore

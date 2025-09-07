@@ -17,7 +17,12 @@ clerk = Clerk(bearer_auth=CLERK_SECRET_KEY)
 async def get_current_user(request: Request):
     request_state = clerk.authenticate_request(
         request,
-        AuthenticateRequestOptions(authorized_parties=["*"]),
+        AuthenticateRequestOptions(
+            authorized_parties=[
+                "https://n8n-project-alpha.vercel.app",
+                "http://localhost:3000",
+            ]
+        ),
     )
 
     if not request_state.is_signed_in:

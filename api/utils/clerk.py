@@ -21,7 +21,7 @@ async def get_current_user(request: Request):
             authorized_parties=[
                 "https://n8n-project-alpha.vercel.app",
                 "http://localhost:3000",
-            ]
+            ],
         ),
     )
 

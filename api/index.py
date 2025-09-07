@@ -7,6 +7,6 @@ app = FastAPI()
 app.include_router(auth.router)
 
 
-@app.get("/api/health")
+@app.get("/api/health", tags=["health"])
 def health_check():
     return {"message": "Healthy!"}

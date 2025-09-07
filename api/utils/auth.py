@@ -8,6 +8,8 @@ from fastapi import HTTPException, Request
 load_dotenv(".env.local")
 CLERK_SECRET_KEY = os.getenv("CLERK_SECRET_KEY")
 
+if not CLERK_SECRET_KEY:
+    raise ValueError("CLERK_SECRET_KEY environment variable is not set")
 
 clerk = Clerk(bearer_auth=CLERK_SECRET_KEY)
 
@@ -15,12 +17,7 @@ clerk = Clerk(bearer_auth=CLERK_SECRET_KEY)
 async def get_current_user(request: Request):
     request_state = clerk.authenticate_request(
         request,
-        AuthenticateRequestOptions(
-            authorized_parties=[
-                "http://localhost:3000",
-                "https://n8n-project-nu.vercel.app/",
-            ]
-        ),
+        AuthenticateRequestOptions(authorized_parties=["*"]),
     )
 
     if not request_state.is_signed_in:

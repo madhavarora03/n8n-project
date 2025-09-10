@@ -2,19 +2,15 @@ import os
 
 from clerk_backend_api import Clerk
 from clerk_backend_api.security.types import AuthenticateRequestOptions
-from dotenv import load_dotenv
 from fastapi import HTTPException, Request
 
-load_dotenv(".env.local")
-CLERK_SECRET_KEY = os.getenv("CLERK_SECRET_KEY")
+from api.core.config import settings
 
-if not CLERK_SECRET_KEY:
-    raise ValueError("CLERK_SECRET_KEY environment variable is not set")
-
-clerk = Clerk(bearer_auth=CLERK_SECRET_KEY)
+clerk = Clerk(bearer_auth=settings.CLERK_SECRET_KEY)
 
 
 async def get_current_user(request: Request):
+    """Get the current authenticated user from the request using Clerk."""
     request_state = clerk.authenticate_request(
         request,
         AuthenticateRequestOptions(
